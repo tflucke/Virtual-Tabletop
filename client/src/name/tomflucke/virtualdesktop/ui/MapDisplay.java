@@ -14,21 +14,54 @@ import name.tomflucke.virtualdesktop.map.RPGMap;
 import name.tomflucke.virtualdesktop.map.RPGMap.Layer;
 import name.tomflucke.virtualdesktop.map.Tile;
 
+/*
+ * TODO:
+ * Documentation on hold until final deisgns for layout management are decided
+ */
+
+/**
+ * An area which paints a given RPGMap.
+ * This object will update whenever the map changes.
+ * 
+ * @author tom
+ * @version 1.0.0
+ */
 public class MapDisplay extends JPanel implements RPGMap.MapListener
 {
 	private static final long serialVersionUID = -1417051982711902331L;
 	
+	/**
+	 * A component which a MapDisplay will use to draw a tile.
+	 * This is the display equivalent of the RPGMap layer.
+	 * 
+	 * @author tom
+	 * @see RPGMap.Layer
+	 * @see Tile
+	 */
 	private static class TileComponent extends JComponent
 	{
 		private static final long serialVersionUID = 4694958303904544079L;
 		
+		/**
+		 * The tile which this component will paint.
+		 */
 		private final Tile tile;
 		
+		/**
+		 * Creates a new TileComponent which represents the given Tile.
+		 * 
+		 * @param t The tile which will be painted on the MapDisplay
+		 */
 		public TileComponent(Tile t)
 		{
 			tile = t;
 		}
 		
+		/**
+		 * Paints the given tile onto the graphics.
+		 * 
+		 * @param g the Graphics context in which to paint
+		 */
 		@Override
 		public void paintComponent(Graphics g)
 		{

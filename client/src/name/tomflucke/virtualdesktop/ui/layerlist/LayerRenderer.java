@@ -13,13 +13,35 @@ import javax.swing.table.TableCellRenderer;
 import name.tomflucke.components.ImageComponent;
 import name.tomflucke.virtualdesktop.map.RPGMap.Layer;
 
+/**
+ * Creates a component which displays a Layer object.
+ * 
+ * @author tom
+ * @version 1.0.0
+ * @see name.tomflucke.virtualdesktop.map.RPGMap.Layer
+ */
 class LayerRenderer implements TableCellRenderer
 {
+	/**
+	 * Creates an image which will represent how the layer will be displayed on
+	 * a MapDisplay.
+	 * 
+	 * This class specifically ignores visibility: it will be drawn the same
+	 * regardless.
+	 * 
+	 * @param table The JTable we're painting.
+	 * @param value The Layer to paint.
+	 * @param isSelected True if the specified cell was selected.
+	 * @param hasFocus True if the specified cell has the focus.
+	 * @param row The row of the cell.
+	 * @param column The column of the cell.
+	 * @return A component whose paint() method will render the specified value.
+	 */
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value,
 	        boolean isSelected, boolean hasFocus, int row, int column)
 	{
-		Layer l = (Layer) table.getValueAt(row, column);
+		Layer l = (Layer) value;
 		
 		Dimension prefSize = l.getMap().getSize();
 		Point loc = l.getPosition();

@@ -16,6 +16,10 @@ import javax.swing.SwingConstants;
 
 import name.tomflucke.virtualdesktop.DebugConstants;
 
+/*
+ * Unsure if this will be part of further designs.
+ */
+
 /**
  * A class which builds and displays menus.
  * This class views menus as an ordered collection of buttons. Every

@@ -3,6 +3,7 @@ package name.tomflucke.virtualdesktop;
 /**
  * The interface simply contains a set of constants which can be used anywhere
  * in the program.
+ * 
  * Each constant provides more information than any of the previous ones.
  * Classes using this interface should use <code>printIfDebug</code> methods to
  * print debug information.
@@ -45,6 +46,7 @@ public interface DebugConstants
 	 * @param debugMode The current debug mode
 	 * @param requiredLevel The level required to print the message
 	 * @param message A message to print
+	 * @since 1.0.1
 	 */
 	public static void printIfDebug(byte debugMode, byte requiredLevel,
 	        String message)

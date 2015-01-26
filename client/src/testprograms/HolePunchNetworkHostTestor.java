@@ -42,7 +42,7 @@ import name.tomflucke.virtualdesktop.ui.MapEditor;
 import name.tomflucke.virtualdesktop.ui.TileListRenderer;
 import name.tomflucke.virtualdesktop.ui.layerlist.ColumnConstants;
 import name.tomflucke.virtualdesktop.ui.layerlist.ColumnInfo;
-import name.tomflucke.virtualdesktop.ui.layerlist.LayerList;
+import name.tomflucke.virtualdesktop.ui.layerlist.LayerTable;
 
 public class HolePunchNetworkHostTestor implements ColumnConstants {
 	private static final InetSocketAddress serverAddress = new InetSocketAddress(
@@ -50,7 +50,7 @@ public class HolePunchNetworkHostTestor implements ColumnConstants {
 
 	private static RPGMap map;
 	private static MapDisplay mapPanel;
-	private static LayerList layerList;
+	private static LayerTable layerList;
 	private static ObjectOutputStream client;
 
 	private static JFrame buildWindow() {
@@ -159,8 +159,8 @@ public class HolePunchNetworkHostTestor implements ColumnConstants {
 		return tileGroupSelector;
 	}
 
-	private static LayerList buildLayerList(RPGMap map) {
-		LayerList layerList = new LayerList(new ColumnInfo[] {
+	private static LayerTable buildLayerList(RPGMap map) {
+		LayerTable layerList = new LayerTable(new ColumnInfo[] {
 				new ColumnInfo(40, HIDE_BUTTON), new ColumnInfo(75, PREVIEW),
 				new ColumnInfo(70, LAYER_NAME) });
 		layerList.setMap(map);

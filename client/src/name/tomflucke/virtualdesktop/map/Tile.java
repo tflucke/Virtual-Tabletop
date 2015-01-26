@@ -53,12 +53,9 @@ public class Tile
 	/**
 	 * Adds a tile to the collection
 	 * 
-	 * @param name
-	 *            The name of the tile
-	 * @param img
-	 *            The image representation of the tile
-	 * @param groupNames
-	 *            All of the groups to which the tile belongs
+	 * @param name The name of the tile
+	 * @param img The image representation of the tile
+	 * @param groupNames All of the groups to which the tile belongs
 	 */
 	public static void addTile(String name, Image img, String[] groupNames)
 	{
@@ -94,8 +91,7 @@ public class Tile
 	/**
 	 * Gets a tile with a given name
 	 * 
-	 * @param name
-	 *            The name of the tile
+	 * @param name The name of the tile
 	 * @return A tile which has been assigned the given name or null if none
 	 *         exists
 	 */
@@ -107,8 +103,7 @@ public class Tile
 	/**
 	 * Gets all the tiles that belong to the given group
 	 * 
-	 * @param name
-	 *            The name of the group
+	 * @param name The name of the group
 	 * @return All the tiles which were marked as being in the group
 	 */
 	public static Tile[] getGroup(String name)
@@ -121,11 +116,9 @@ public class Tile
 	 * Gets all the tiles that belong to the given group or, if partialMatch is
 	 * true, any group which contains the group name
 	 * 
-	 * @param name
-	 *            The name of the group
-	 * @param partialMatch
-	 *            If true, will allow any group which contains the name to be
-	 *            added to the results
+	 * @param name The name of the group
+	 * @param partialMatch If true, will allow any group which contains the name
+	 *            to be added to the results
 	 * @return All tiles of any group who matches the expression
 	 */
 	public static Tile[] getGroup(String name, boolean partialMatch)
@@ -138,8 +131,7 @@ public class Tile
 	 * Gets all the tiles that belong to any group whose name matches the given
 	 * regular expression
 	 * 
-	 * @param regex
-	 *            The regular expression which group names will be tested
+	 * @param regex The regular expression which group names will be tested
 	 *            against
 	 * @return All tiles of any group who matches the expression
 	 */
@@ -178,10 +170,8 @@ public class Tile
 	/**
 	 * Creates a tile with the given name and image
 	 * 
-	 * @param name
-	 *            The name of the tile
-	 * @param img
-	 *            The image to be displayed on the map
+	 * @param name The name of the tile
+	 * @param img The image to be displayed on the map
 	 */
 	private Tile(String name, Image img)
 	{
@@ -189,6 +179,11 @@ public class Tile
 		this.image = img;
 	}
 	
+	/**
+	 * Gets the name of the tile
+	 * 
+	 * @return The name of the Tile
+	 */
 	@Override
 	public String toString()
 	{

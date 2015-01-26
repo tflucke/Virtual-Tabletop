@@ -13,10 +13,16 @@ import java.util.List;
 
 /**
  * Contains all the information necessary to store and draw a map.
- * Note, all dimensions and points are measured in "Map Units", not pixels.
- * A single map unit does not necessarily correspond to any amount of pixels although, it will usually be about 98px or 1 inch.
- * The reason "Map Units" are used instead of some other unit is because this allows for variability in the display, such as a zoom feature or a hexagonal grid.
- * Additionally, this makes computation easier, since instead of calculating whether or not two layers overlap anywhere over 98px, you only have to check for if they share that one locus.
+ * 
+ * Note, all dimensions and points are measured in "Map Units", not pixels. A
+ * single map unit does not necessarily correspond to any amount of pixels
+ * although, it will usually be about 98px or 1 inch.
+ * 
+ * The reason "Map Units" are used instead of some other unit is because this
+ * allows for variability in the display, such as a zoom feature or a hexagonal
+ * grid. Additionally, this makes computation easier, since instead of
+ * calculating whether or not two layers overlap anywhere over 98px, you only
+ * have to check for if they share that one locus.
  * 
  * @author tom
  * @version 1.0.1
@@ -27,19 +33,62 @@ public class RPGMap implements Serializable
 	private static final long serialVersionUID = -8654411772344018235L;
 	
 	/**
-	 * An interface which the map can use to notify other object when something changes.
+	 * An interface which the map can use to notify other object when something
+	 * changes.
 	 * 
 	 * @author tom
 	 *
 	 */
 	public static interface MapListener
 	{
+		/**
+		 * Invoked when a layer is added.
+		 * 
+		 * @param newLayer The layer which was added.
+		 */
 		public void layerAdded(Layer newLayer);
+		
+		/**
+		 * Invoked when a layer is removed.
+		 * 
+		 * @param removedLayer The layer which was removed.
+		 */
 		public void layerRemoved(Layer removedLayer);
+		
+		/**
+		 * Invoked when the location of a layer changes.
+		 * 
+		 * @param changedLayer The layer which was moved.
+		 */
 		public void layerMoved(Layer changedLayer);
+		
+		/**
+		 * Invoked when the size of a layer changes.
+		 * 
+		 * @param changedLayer The layer which was resized.
+		 */
 		public void layerResized(Layer changedLayer);
+		
+		/**
+		 * Invoked when the order of a layer changes.
+		 * 
+		 * @param changedLayer The layer which was reordered.
+		 */
 		public void layerReordered(Layer changedLayer);
+		
+		/**
+		 * Invoked when the name of a layer changes.
+		 * 
+		 * @param changedLayer The layer which was renamed.
+		 */
 		public void layerRenamed(Layer changedLayer);
+		
+		/**
+		 * Invoked when the visibility of a layer changes.
+		 * 
+		 * @param changedLayer The layer which was made either visible or
+		 *            invisible.
+		 */
 		public void layerVisibilitySet(Layer changedLayer);
 	}
 	
@@ -56,11 +105,12 @@ public class RPGMap implements Serializable
 	 */
 	private final List<Layer> layers;
 	/**
-	 * The current size of the map
+	 * The current size of the map.
+	 * 
 	 * All sizes are measured in "Map Units".
 	 */
 	private Dimension size;
-
+	
 	{
 		nextLayerId = 0;
 		mapListeners = new HashSet<>();
@@ -69,6 +119,7 @@ public class RPGMap implements Serializable
 	
 	/**
 	 * Creates a new map with the given size.
+	 * 
 	 * All sizes are measured in "Map Units".
 	 * 
 	 * @param size The default size for the new map.
@@ -77,23 +128,24 @@ public class RPGMap implements Serializable
 	{
 		this.size = size;
 	}
-
+	
 	/**
 	 * Restores the object information and reinitializes listener collections.
 	 * 
 	 * @param inputStream The source of information
-	 * @throws IOException
-	 * @throws ClassNotFoundException
+	 * @throws IOException Error reading from the stream
+	 * @throws ClassNotFoundException Wait, what?
 	 */
-    private void readObject(ObjectInputStream inputStream)
-            throws IOException, ClassNotFoundException
-    {
-    	inputStream.defaultReadObject();
+	private void readObject(ObjectInputStream inputStream) throws IOException,
+	        ClassNotFoundException
+	{
+		inputStream.defaultReadObject();
 		mapListeners = new HashSet<>();
-    } 
-    
+	}
+	
 	/**
 	 * Creates a new layer associated with this map.
+	 * 
 	 * All sizes are measured in "Map Units".
 	 * 
 	 * @param tile The tile which the new layer will display
@@ -108,7 +160,7 @@ public class RPGMap implements Serializable
 			ml.layerAdded(newLayer);
 		}
 	}
-
+	
 	/**
 	 * Gets all the layers associated with this map.
 	 * 
@@ -118,9 +170,9 @@ public class RPGMap implements Serializable
 	{
 		return layers.toArray(new Layer[0]);
 	}
-
+	
 	/**
-	 * Finds and returns a layer whose id matches the given 
+	 * Finds and returns a layer whose id matches the given
 	 * 
 	 * @param layerId The id to compare against
 	 * @return The layer with a matching id, or null if none exists.
@@ -136,7 +188,7 @@ public class RPGMap implements Serializable
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Finds and returns the z-th layer
 	 * 
@@ -149,7 +201,8 @@ public class RPGMap implements Serializable
 	}
 	
 	/**
-	 * Gets the current size of the map. 
+	 * Gets the current size of the map.
+	 * 
 	 * All sizes are measured in "Map Units".
 	 * 
 	 * @return The size of the map
@@ -161,7 +214,9 @@ public class RPGMap implements Serializable
 	
 	/**
 	 * Adds a new MapListener.
-	 * MapListeners, once added, will be notified of all events that happen in this map.
+	 * 
+	 * MapListeners, once added, will be notified of all events that happen in
+	 * this map.
 	 * 
 	 * @param listener The listener to be added
 	 * @return true if the listener was successfully added, false otherwise
@@ -169,15 +224,17 @@ public class RPGMap implements Serializable
 	public boolean addMapListener(MapListener listener)
 	{
 		return mapListeners.add(listener);
-//		for (MapDisplayListener mdl : listeners)
-//		{
-//			mdl.registered(map);
-//		}
+		// for (MapDisplayListener mdl : listeners)
+		// {
+		// mdl.registered(map);
+		// }
 	}
-
+	
 	/**
 	 * Removes a MapListener.
-	 * MapListeners, once removed, won't be notified of any events that happen in this map.
+	 * 
+	 * MapListeners, once removed, won't be notified of any events that happen
+	 * in this map.
 	 * 
 	 * @param listener The listener to be removed
 	 * @return true if the listener was successfully removed, false otherwise
@@ -185,10 +242,10 @@ public class RPGMap implements Serializable
 	public boolean removeMapeListener(MapListener listener)
 	{
 		return mapListeners.remove(listener);
-//		for (MapDisplayListener mdl : listeners)
-//		{
-//			mdl.unregistered(map);
-//		}
+		// for (MapDisplayListener mdl : listeners)
+		// {
+		// mdl.unregistered(map);
+		// }
 	}
 	
 	/**
@@ -207,12 +264,16 @@ public class RPGMap implements Serializable
 		private final int layerId;
 		/**
 		 * The name of this layer.
-		 * Primarily used for identifying the layer in the editor.  Servers little functional purpose.
+		 * 
+		 * Primarily used for identifying the layer in the editor. Servers
+		 * little functional purpose.
 		 */
 		private String name;
 		/**
 		 * Represents the current distance from the top of the map display.
-		 * This member is updated such that layers.get(currentIndex) == this is always true.
+		 * 
+		 * This member is updated such that layers.get(currentIndex) == this is
+		 * always true.
 		 */
 		private int currentIndex;
 		/**
@@ -221,21 +282,23 @@ public class RPGMap implements Serializable
 		private transient Tile tile;
 		/**
 		 * The name of the tile to be painted.
+		 * 
 		 * This is used to recover tile information after serializing the layer.
 		 */
-		/* 
-		 * TODO:
-		 * Remove this field and print the tile name in the writeObject method,
-		 * and recover it in the readObject method.
+		/*
+		 * TODO: Remove this field and print the tile name in the writeObject
+		 * method, and recover it in the readObject method.
 		 */
 		private final String tileName;
 		/**
 		 * The position of the layer.
+		 * 
 		 * All sizes are measured in "Map Units".
 		 */
 		private Point position;
 		/**
 		 * The size of the layer.
+		 * 
 		 * All sizes are measured in "Map Units".
 		 */
 		private Dimension size;
@@ -255,12 +318,13 @@ public class RPGMap implements Serializable
 				for (int i = 1; i < layers.size(); i++)
 				{
 					layers.get(i).currentIndex++;
-				}	
+				}
 			}
 		}
 		
 		/**
 		 * Creates a new Layer which matches the given descriptions.
+		 * 
 		 * All sizes are measured in "Map Units".
 		 * 
 		 * @param t The tile which is painted on this layer
@@ -274,54 +338,58 @@ public class RPGMap implements Serializable
 			position = p;
 			size = d;
 		}
-
+		
 		/**
 		 * Restores the object information and recollects the Tile.
-		 * Tiles are not saved during serialization to prevent sync errors and save data.
+		 * 
+		 * Tiles are not saved during serialization to prevent sync errors and
+		 * save data.
 		 * 
 		 * @param inputStream The source of information
-		 * @throws IOException
-		 * @throws ClassNotFoundException
+		 * @throws IOException Error reading from the stream
+		 * @throws ClassNotFoundException Wait, what?
 		 */
-	    private void readObject(ObjectInputStream inputStream)
-	            throws IOException, ClassNotFoundException
-	    {
-	    	inputStream.defaultReadObject();
-	    	tile = Tile.getTile(tileName);
-	    	if (layers != null)
-	    	{
+		private void readObject(ObjectInputStream inputStream)
+		        throws IOException, ClassNotFoundException
+		{
+			inputStream.defaultReadObject();
+			tile = Tile.getTile(tileName);
+			if (layers != null)
+			{
 				synchronized (layers)
 				{
 					layers.add(currentIndex, this);
-					for (int i = currentIndex+1; i < layers.size(); i++)
+					for (int i = currentIndex + 1; i < layers.size(); i++)
 					{
 						layers.get(i).currentIndex++;
-					}	
+					}
 				}
 				for (MapListener ml : mapListeners)
 				{
 					ml.layerAdded(this);
 				}
-	    	}
-	    }
-	    
+			}
+		}
+		
 		/**
-		 * Changes the current position and size of this layer.
+		 * Changes the current position of this layer.
+		 * 
 		 * All sizes are measured in "Map Units"
 		 * 
-		 * @param bounds The new position and size of this layer
+		 * @param pos The new position of this layer
 		 */
 		public void setPosition(Point pos)
 		{
 			position = pos;
-	    	for (MapListener ml : mapListeners)
-	    	{
-	    		ml.layerMoved(this);
-	    	}
+			for (MapListener ml : mapListeners)
+			{
+				ml.layerMoved(this);
+			}
 		}
-
+		
 		/**
 		 * Changes the current position and size of this layer.
+		 * 
 		 * All sizes are measured in "Map Units"
 		 * 
 		 * @param bounds The new position and size of this layer
@@ -330,15 +398,16 @@ public class RPGMap implements Serializable
 		{
 			position = bounds.getLocation();
 			size = bounds.getSize();
-	    	for (MapListener ml : mapListeners)
-	    	{
-	    		ml.layerMoved(this);
-	    		ml.layerResized(this);
-	    	}
+			for (MapListener ml : mapListeners)
+			{
+				ml.layerMoved(this);
+				ml.layerResized(this);
+			}
 		}
-
+		
 		/**
 		 * Changes the current size of this layer.
+		 * 
 		 * All sizes are measured in "Map Units"
 		 * 
 		 * @param size The new size of this layer
@@ -346,12 +415,12 @@ public class RPGMap implements Serializable
 		public void setSize(Dimension size)
 		{
 			this.size = size;
-	    	for (MapListener ml : mapListeners)
-	    	{
-	    		ml.layerResized(this);
-	    	}
+			for (MapListener ml : mapListeners)
+			{
+				ml.layerResized(this);
+			}
 		}
-
+		
 		/**
 		 * Sets the name for this layer.
 		 * 
@@ -360,15 +429,17 @@ public class RPGMap implements Serializable
 		public void setName(String newName)
 		{
 			name = newName;
-	    	for (MapListener ml : mapListeners)
-	    	{
-	    		ml.layerRenamed(this);
-	    	}
+			for (MapListener ml : mapListeners)
+			{
+				ml.layerRenamed(this);
+			}
 		}
-
+		
 		/**
 		 * Sets the distance from the top of the layer stack.
-		 * For example, with layers A, B, & C, setting C to 0 would reorder the layers C, A, & B.
+		 * 
+		 * For example, with layers A, B, and C, setting C to 0 would reorder
+		 * the layers C, A, and B.
 		 * 
 		 * @param index Distance from the top
 		 */
@@ -376,7 +447,7 @@ public class RPGMap implements Serializable
 		{
 			if (index > currentIndex)
 			{
-				for (int i = currentIndex+1; i <= index; i++)
+				for (int i = currentIndex + 1; i <= index; i++)
 				{
 					layers.get(i).currentIndex--;
 				}
@@ -391,12 +462,12 @@ public class RPGMap implements Serializable
 			currentIndex = index;
 			layers.remove(this);
 			layers.add(index, this);
-	    	for (MapListener ml : mapListeners)
-	    	{
-	    		ml.layerReordered(this);
-	    	}
+			for (MapListener ml : mapListeners)
+			{
+				ml.layerReordered(this);
+			}
 		}
-
+		
 		/**
 		 * Sets the visibility
 		 * 
@@ -405,12 +476,12 @@ public class RPGMap implements Serializable
 		public void setVisible(boolean flag)
 		{
 			visible = flag;
-	    	for (MapListener ml : mapListeners)
-	    	{
-	    		ml.layerVisibilitySet(this);
-	    	}
+			for (MapListener ml : mapListeners)
+			{
+				ml.layerVisibilitySet(this);
+			}
 		}
-
+		
 		/**
 		 * Returns the id of this layer.
 		 * 
@@ -420,7 +491,7 @@ public class RPGMap implements Serializable
 		{
 			return layerId;
 		}
-
+		
 		/**
 		 * Returns the current name of the layer.
 		 * 
@@ -430,10 +501,12 @@ public class RPGMap implements Serializable
 		{
 			return name;
 		}
-
+		
 		/**
 		 * Returns this layer's position in the vertical position of this layer.
-		 * For example, a layer with a z-position of 0 will display on top of all the other layers.
+		 * 
+		 * For example, a layer with a z-position of 0 will display on top of
+		 * all the other layers.
 		 * 
 		 * @return The number of layers between this and the top of the map
 		 */
@@ -441,7 +514,7 @@ public class RPGMap implements Serializable
 		{
 			return currentIndex;
 		}
-
+		
 		/**
 		 * Returns the tile which the layer paints.
 		 * 
@@ -451,9 +524,10 @@ public class RPGMap implements Serializable
 		{
 			return tile;
 		}
-
+		
 		/**
 		 * Returns the current size of the layer.
+		 * 
 		 * All sizes are measured in "Map Units"
 		 * 
 		 * @return The dimensions of the object
@@ -462,9 +536,10 @@ public class RPGMap implements Serializable
 		{
 			return position;
 		}
-
+		
 		/**
 		 * Returns the current size of the layer.
+		 * 
 		 * All sizes are measured in "Map Units"
 		 * 
 		 * @return The dimensions of the object
@@ -473,9 +548,9 @@ public class RPGMap implements Serializable
 		{
 			return size;
 		}
-
+		
 		/**
-		 * Returns whether or not the layer is currently visible. 
+		 * Returns whether or not the layer is currently visible.
 		 * 
 		 * @return true if the layer is currently visible, false otherwise
 		 */
@@ -493,5 +568,5 @@ public class RPGMap implements Serializable
 		{
 			return RPGMap.this;
 		}
-	}	
+	}
 }

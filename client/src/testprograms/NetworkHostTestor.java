@@ -39,13 +39,13 @@ import name.tomflucke.virtualdesktop.ui.MapEditor;
 import name.tomflucke.virtualdesktop.ui.TileListRenderer;
 import name.tomflucke.virtualdesktop.ui.layerlist.ColumnConstants;
 import name.tomflucke.virtualdesktop.ui.layerlist.ColumnInfo;
-import name.tomflucke.virtualdesktop.ui.layerlist.LayerList;
+import name.tomflucke.virtualdesktop.ui.layerlist.LayerTable;
 
 public class NetworkHostTestor implements ColumnConstants
 {
 	private static RPGMap map;
 	private static MapDisplay mapPanel;
-	private static LayerList layerList;
+	private static LayerTable layerList;
 	private static List<ObjectOutputStream> clients;
 	
 	private static JFrame buildWindow()
@@ -177,9 +177,9 @@ public class NetworkHostTestor implements ColumnConstants
 		return tileGroupSelector;
 	}
 	
-	private static LayerList buildLayerList(RPGMap map)
+	private static LayerTable buildLayerList(RPGMap map)
 	{
-		LayerList layerList = new LayerList(new ColumnInfo[] {
+		LayerTable layerList = new LayerTable(new ColumnInfo[] {
 		        new ColumnInfo(40, HIDE_BUTTON), new ColumnInfo(75, PREVIEW),
 		        new ColumnInfo(70, LAYER_NAME) });
 		layerList.setMap(map);

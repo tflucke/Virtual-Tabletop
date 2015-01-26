@@ -11,105 +11,94 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 
-public class TileListRenderer implements ListCellRenderer<Tile>, SwingConstants
+/**
+ * An object which renders a Tile object.
+ * 
+ * This is meant to be used with a JList for having a place from which to drag
+ * new tiles.
+ * 
+ * @author tom
+ * @version 1.0.0
+ *
+ */
+public class TileListRenderer extends JLabel implements ListCellRenderer<Tile>,
+        SwingConstants
 {
+	private static final long serialVersionUID = -7992322394942398165L;
+	
+	/**
+	 * Determines whether or not a preview of the tile will display
+	 */
 	private boolean showIcons;
+	/**
+	 * Determines whether or not the name of the tile will display
+	 */
 	private boolean showNames;
-	private int marginSize;
-	private int textHPosition;
-	private int textVPosition;
-	private int hPosition;
-	private int vPosition;
 	
 	{
-		marginSize = 6;
-		showIcons = true;
-		showNames = true;
-		textHPosition = CENTER;
-		textVPosition = BOTTOM;
-		hPosition = CENTER;
-		vPosition = CENTER;
+		int marginSize = 6;
+		setOpaque(false);
+		setBorder(BorderFactory.createEmptyBorder(marginSize, marginSize,
+		        marginSize, marginSize));
 	}
 	
+	{
+		showIcons = true;
+		showNames = true;
+	}
+	
+	/**
+	 * Sets whether or not a tile will display a preview or not.
+	 * 
+	 * @param icons true to display the tile preview, false otherwise
+	 */
 	public void setShowIcons(boolean icons)
 	{
 		showIcons = icons;
 	}
 	
+	/**
+	 * Determines whether or not a tile will display a preview or not.
+	 * 
+	 * @return true if displaying the tile preview, false otherwise
+	 */
 	public boolean isShowingIcons()
 	{
 		return showIcons;
 	}
 	
+	/**
+	 * Sets whether or not a tile will display the name or not.
+	 * 
+	 * @param names true to display the tile name, false otherwise
+	 */
 	public void setShowNames(boolean names)
 	{
 		showNames = names;
 	}
 	
+	/**
+	 * Determines whether or not a tile will display the name or not.
+	 * 
+	 * @return true if displaying the tile name, false otherwise
+	 */
 	public boolean isShowingNames()
 	{
 		return showNames;
 	}
 	
-	public void setHorizontalTextAlignment(int alignment)
-	{
-		textHPosition = alignment;
-	}
-	
-	public int getHorizontalTextAlignment()
-	{
-		return textHPosition;
-	}
-	
-	public void setVerticalTextAlignment(int alignment)
-	{
-		textVPosition = alignment;
-	}
-	
-	public int getVerticalTextAlignment()
-	{
-		return textVPosition;
-	}
-	
-	public void setVerticalAlignment(int alignment)
-	{
-		vPosition = alignment;
-	}
-	
-	public int getVerticalAlignment()
-	{
-		return vPosition;
-	}
-	
-	public void setHorizontalAlignment(int alignment)
-	{
-		hPosition = alignment;
-	}
-	
-	public int getHorizontalAlignment()
-	{
-		return hPosition;
-	}
-
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Tile> list,
 	        Tile value, int index, boolean isSelected, boolean cellHasFocus)
 	{
-		JLabel result = new JLabel();
-		result.setBorder(BorderFactory.createEmptyBorder(marginSize,
-		        marginSize, marginSize, marginSize));
 		if (showIcons)
 		{
-			result.setIcon(new ImageIcon(value.image));
+			setIcon(new ImageIcon(value.image));
 		}
 		if (showNames)
 		{
-			result.setText(value.name);
+			setText(value.name);
 		}
-		result.setHorizontalTextPosition(textHPosition);
-		result.setVerticalTextPosition(textVPosition);
-		result.setVerticalAlignment(vPosition);
-		result.setHorizontalAlignment(hPosition);
-		return result;
+		return this;
 	}
 }
