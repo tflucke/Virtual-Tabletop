@@ -9,7 +9,6 @@
 #include "network/ServerSocket.h"	/* ServerSocket */
 #include "network/SocketException.h"	/* SocketException */
 #include "debug/DebugMethods.hpp"	/* printIfDebug, VERBOSE*/
-//#include "clients/Client.h"		/* Client */
 
 int
 main (int argsLength, char** args)
@@ -39,21 +38,3 @@ main (int argsLength, char** args)
   printIfDebug (VERBOSE, "Exiting.");
   return 0;
 }
-//
-//int
-//main (int argsLength, char** args)
-//{
-//	try
-//	{
-//		ServerSocket ss (4335);
-//		//		TCPSocket tcps1 = ss.accept ();
-//		//		TCPSocket tcps2 = ss.accept ();
-//		//		tcps1.print ("%s:%d\r\n", tcps2.getClientIP (), tcps2.getClientPort ());
-//		//		tcps2.print ("%s:%d\r\n", tcps1.getClientIP (), tcps1.getClientPort ());
-//	}
-//	catch (SocketException& se)
-//	{
-//		std::cout << se.what () << std::endl;
-//	}
-//	return 0;
-//}
