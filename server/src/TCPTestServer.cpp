@@ -20,8 +20,10 @@ main (int argsLength, char** args)
     ServerSocket ss (3345);
     TCPSocket* tcps1 = ss.accept ();
     printIfDebug (VERBOSE, "Received first connection.");
+    printIfDebug (VERBOSE, "TCP1: %s:%d\n.", tcps1->getClientIP (), tcps1->getClientPort ());
     TCPSocket* tcps2 = ss.accept ();
     printIfDebug (VERBOSE, "Received second connection.");
+    printIfDebug (VERBOSE, "TCP2: %s:%d\n.", tcps2->getClientIP (), tcps2->getClientPort ());
     printIfDebug (VERBOSE, "Sending Con2 private IP to Con1.");
     tcps1->print (tcps2->readLine ());
     printIfDebug (VERBOSE, "Sending Con1 private IP to Con2.");
