@@ -8,28 +8,39 @@
 #ifndef SRC_DEBUG_DEBUGMETHODS_HPP_
 #define SRC_DEBUG_DEBUGMETHODS_HPP_
 
-#include <iostream>			/* std::cout, std::endl */
+#include <cstdio>		/* printf */
+#include <string>		/* std::string */
+#include <stdarg.h> 		/* va_list, va_start, va_end */
 
-enum DebugLevel {OFF = 0, FATAL, ERROR, WARNING, VERBOSE};
+enum DebugLevel
+{
+  OFF = 0, FATAL, ERROR, WARNING, VERBOSE
+};
 
 DebugLevel debugMode = OFF;
 
 void
-printIfDebug (DebugLevel requiredLevel, std::string message)
+printIfDebug (DebugLevel requiredLevel, std::string format, ...)
 {
   if (debugMode >= requiredLevel)
   {
-    std::cout << message << std::endl;
+    va_list args;
+    va_start(args, format);
+    printf (format.c_str (), args);
+    va_end(args);
   }
 }
 
 void
 printIfDebug (DebugLevel debugMode, DebugLevel requiredLevel,
-	      std::string message)
+	      std::string format, ...)
 {
   if (debugMode >= requiredLevel)
   {
-    std::cout << message << std::endl;
+    va_list args;
+    va_start(args, format);
+    printf (format.c_str (), args);
+    va_end(args);
   }
 }
 
