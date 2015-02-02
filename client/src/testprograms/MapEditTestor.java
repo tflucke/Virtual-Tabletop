@@ -38,7 +38,7 @@ import name.tomflucke.virtualdesktop.ui.layerlist.LayerTable;
 
 public class MapEditTestor implements DebugConstants, ColumnConstants
 {
-	private static byte DEBUG_MODE = OFF;
+	private static byte DEBUG_MODE = VERBOSE;
 	private static RPGMap map;
 	private static MapDisplay mapPanel;
 	private static LayerTable layerList; 
