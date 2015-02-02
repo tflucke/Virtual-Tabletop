@@ -6,12 +6,12 @@
  */
 
 #include "TCPSocket.h"
-#include <unistd.h> 					/* close, read */
-#include <arpa/inet.h>				/* inet_ntoa */
-#include <stdio.h> 						/* fprintf, fgets */
-#include <stdarg.h> 					/* va_list, va_start, va_end */
-#include <stdexcept>					/* std::runtime_error */
-#include <errno.h>						/* errno */
+#include <unistd.h> 		/* close, read */
+#include <arpa/inet.h>		/* inet_ntoa */
+#include <stdio.h> 		/* fprintf, fgets */
+#include <stdarg.h> 		/* va_list, va_start, va_end */
+#include <stdexcept>		/* std::runtime_error */
+#include <errno.h>		/* errno */
 #include "SocketException.h"	/* SocketException */
 
 TCPSocket::TCPSocket (const int socketDescriptor, const sockaddr_in info,
@@ -78,7 +78,7 @@ TCPSocket::read () const
 
     if (lastRead < 0 && errno != EINTR)
     {
-        throw SocketException ("Read error");
+      throw SocketException ("Read error");
     }
     else if (lastRead == 0)
     {
