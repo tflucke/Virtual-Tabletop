@@ -34,6 +34,7 @@ import name.tomflucke.dragNdrop.DragDropListener;
 import name.tomflucke.layouts.TableLayout;
 import name.tomflucke.network.HolePuncher;
 import name.tomflucke.virtualdesktop.DebugConstants;
+import name.tomflucke.virtualdesktop.Debugger;
 import name.tomflucke.virtualdesktop.map.RPGMap;
 import name.tomflucke.virtualdesktop.map.RPGMap.Layer;
 import name.tomflucke.virtualdesktop.map.Tile;
@@ -168,7 +169,7 @@ public class HolePunchNetworkHostTestor implements ColumnConstants,
 	}
 	
 	private static AutoCompleteComboBox buildTileGroupSelector(
-	        JList<Tile> tileList)
+	        final JList<Tile> tileList)
 	{
 		AutoCompleteComboBox tileGroupSelector = new AutoCompleteComboBox(
 		        Arrays.asList(Tile.getGroupNames()));
@@ -197,39 +198,43 @@ public class HolePunchNetworkHostTestor implements ColumnConstants,
 	
 	private static Socket connectToPeer() throws IOException
 	{
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Initalizing socket.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Initalizing socket.");
 		Socket server = new Socket();
 		server.setReuseAddress(true);
 		server.setTcpNoDelay(true);
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		//server.bind(new InetSocketAddress("127.0.0.1", 16244));
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Connecting to server.");
 		server.connect(serverAddress);
 		int port = server.getLocalPort();
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		System.out.println(port);
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Creating output stream.");
 		PrintWriter out = new PrintWriter(server.getOutputStream());
-		DebugConstants
+		Debugger
 		        .printIfDebug(DEBUG_MODE, VERBOSE, "Printing private IP.");
 		out.println(InetAddress.getLocalHost().getHostAddress() + ":" + port);
 		out.flush();
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Creating input stream.");
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 		        server.getInputStream()));
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Reading remote private IP.");
 		String[] ip_port = in.readLine().split(":");
 		InetSocketAddress localPeerSocket = new InetSocketAddress(ip_port[0],
 		        Integer.valueOf(ip_port[1]));
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Reading remote public IP.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Peer private IP: " + localPeerSocket);
 		ip_port = in.readLine().split(":");
 		InetSocketAddress remotePeerSocket = new InetSocketAddress(ip_port[0],
 		        Integer.valueOf(ip_port[1]));
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Peer public IP: " + remotePeerSocket);
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Closing server connection.");
 		server.close();
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Punching hole.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Punching hole.");
 		return HolePuncher.punchTCP(remotePeerSocket, localPeerSocket, port);
 	}
 	
@@ -299,48 +304,48 @@ public class HolePunchNetworkHostTestor implements ColumnConstants,
 	
 	public static void main(final String... args) throws IOException
 	{
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Creating Window.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Creating Window.");
 		JFrame window = buildWindow();
 		window.setJMenuBar(buildMenuBar());
 		
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Creating map.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Creating map.");
 		map = new RPGMap(new Dimension(6, 6));
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Adding Grass tile.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Adding Grass tile.");
 		map.addLayer(Tile.getTile("Grass"), new Point(1, 2),
 		        new Dimension(1, 1));
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Adding Water tile.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Adding Water tile.");
 		map.addLayer(Tile.getTile("Water"), new Point(1, 2),
 		        new Dimension(2, 2));
 		
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Creating map display.");
 		mapPanel = buildMapEditor(map);
 		window.add(buildMapPane(mapPanel), "0, 0, 0, 3");
 		
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Creating tile list.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Creating tile list.");
 		JList<Tile> tileList = buildTileList(mapPanel);
 		window.add(tileList, "1, 2");
 		
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Creating tile group drop down list.");
 		window.add(buildTileGroupSelector(tileList), "1, 1");
 		
-		DebugConstants
+		Debugger
 		        .printIfDebug(DEBUG_MODE, VERBOSE, "Creating layer list.");
 		layerList = buildLayerList(map);
 		window.add(layerList, "1, 3");
 		
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Displaying window.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Displaying window.");
 		window.setVisible(true);
 		
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Connecting to peer and creating output stream.");
 		client = new ObjectOutputStream(connectToPeer().getOutputStream());
 		
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Sending map info.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Sending map info.");
 		client.writeObject(map);
 		
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Creating map listener.");
 		map.addMapListener(buildMapListener());
 	}

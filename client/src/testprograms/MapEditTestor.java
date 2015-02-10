@@ -27,6 +27,7 @@ import name.tomflucke.components.AutoCompleteComboBox;
 import name.tomflucke.dragNdrop.DragDropListener;
 import name.tomflucke.layouts.TableLayout;
 import name.tomflucke.virtualdesktop.DebugConstants;
+import name.tomflucke.virtualdesktop.Debugger;
 import name.tomflucke.virtualdesktop.map.RPGMap;
 import name.tomflucke.virtualdesktop.map.Tile;
 import name.tomflucke.virtualdesktop.ui.MapDisplay;
@@ -150,7 +151,7 @@ public class MapEditTestor implements DebugConstants, ColumnConstants
 	}
 	
 	private static AutoCompleteComboBox buildTileGroupSelector(
-	        JList<Tile> tileList)
+	        final JList<Tile> tileList)
 	{
 		AutoCompleteComboBox tileGroupSelector = new AutoCompleteComboBox(
 		        Arrays.asList(Tile.getGroupNames()));
@@ -179,7 +180,7 @@ public class MapEditTestor implements DebugConstants, ColumnConstants
 	
 	public static void main(final String... args)
 	{
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Initializing main window.");
 		JFrame window = buildWindow();
 		window.setJMenuBar(buildMenuBar());
@@ -201,7 +202,7 @@ public class MapEditTestor implements DebugConstants, ColumnConstants
 		layerList = buildLayerList(map);
 		window.add(layerList, "1, 2");
 		
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Displaying main window.");
 		window.setVisible(true);
 	}

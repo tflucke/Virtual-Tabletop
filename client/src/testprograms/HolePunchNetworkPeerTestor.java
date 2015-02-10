@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 
 import name.tomflucke.network.HolePuncher;
 import name.tomflucke.virtualdesktop.DebugConstants;
+import name.tomflucke.virtualdesktop.Debugger;
 import name.tomflucke.virtualdesktop.map.RPGMap;
 import name.tomflucke.virtualdesktop.map.RPGMap.Layer;
 import name.tomflucke.virtualdesktop.ui.MapDisplay;
@@ -36,39 +37,41 @@ public class HolePunchNetworkPeerTestor implements ColumnConstants,
 	
 	private static Socket connectToPeer() throws IOException
 	{
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Initalizing socket.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Initalizing socket.");
 		Socket server = new Socket();
 		server.setReuseAddress(true);
 		server.setTcpNoDelay(true);
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Connecting to server.");
 		server.connect(serverAddress);
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Creating output stream.");
 		int port = server.getLocalPort();
 		PrintWriter out = new PrintWriter(server.getOutputStream());
-		DebugConstants
+		Debugger
 		        .printIfDebug(DEBUG_MODE, VERBOSE, "Printing private IP.");
 		out.println(InetAddress.getLocalHost().getHostAddress() + ":" + port);
 		out.flush();
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Creating input stream.");
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 		        server.getInputStream()));
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Reading remote private IP.");
 		String[] ip_port = in.readLine().split(":");
 		InetSocketAddress localPeerSocket = new InetSocketAddress(ip_port[0],
 		        Integer.valueOf(ip_port[1]));
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Peer private IP: " + localPeerSocket);
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Reading remote public IP.");
 		ip_port = in.readLine().split(":");
 		InetSocketAddress remotePeerSocket = new InetSocketAddress(ip_port[0],
 		        Integer.valueOf(ip_port[1]));
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Peer public IP: " + remotePeerSocket);
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Closing server connection.");
 		server.close();
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Punching hole.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Punching hole.");
 		return HolePuncher.punchTCP(remotePeerSocket, localPeerSocket, port);
 	}
 	
@@ -98,39 +101,39 @@ public class HolePunchNetworkPeerTestor implements ColumnConstants,
 	public static void main(final String... args) throws IOException,
 	        ClassNotFoundException
 	{
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Connecting to Host.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Connecting to Host.");
 		server = connectToPeer();
-		DebugConstants
+		Debugger
 		        .printIfDebug(DEBUG_MODE, VERBOSE, "Saving input stream.");
 		ObjectInputStream in = new ObjectInputStream(server.getInputStream());
 		
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Reading map info.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Reading map info.");
 		map = (RPGMap) in.readObject();
 		
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Creating Window.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Creating Window.");
 		JFrame window = buildWindow();
 		
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 		        "Creating map display.");
 		mapPanel = buildMapDisplay(map);
 		window.add(buildMapPane(mapPanel));
 		
-		DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Displaying window.");
+		Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Displaying window.");
 		window.setVisible(true);
 		
 		while (!server.isClosed())
 		{
-			DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+			Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 			        "Connection still open.");
 			
-			DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Read layer id.");
+			Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Read layer id.");
 			int id = in.readInt();
-			DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+			Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 			        "Read layer object.");
 			Object obj = in.readObject();
 			if (id < 0)
 			{
-				DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE,
+				Debugger.printIfDebug(DEBUG_MODE, VERBOSE,
 				        "Layer Added.\nRepainting.");
 				mapPanel.revalidate();
 			}
@@ -139,40 +142,40 @@ public class HolePunchNetworkPeerTestor implements ColumnConstants,
 				Layer l = map.getLayerById(id);
 				if (obj == null)
 				{
-					DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Layer "
+					Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Layer "
 					        + id + " deleted.");
 					// Remove Layer
 				}
 				else if (obj instanceof Point)
 				{
 					Point pos = (Point) obj;
-					DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Layer "
+					Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Layer "
 					        + id + " moved to " + pos + ".");
 					l.setPosition(pos);
 				}
 				else if (obj instanceof Dimension)
 				{
 					Dimension size = (Dimension) obj;
-					DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Layer "
+					Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Layer "
 					        + id + " resized to +" + size + ".");
 					l.setSize(size);
 				}
 				else if (obj instanceof Boolean)
 				{
 					boolean visible = (Boolean) obj;
-					DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Layer "
+					Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Layer "
 					        + id + " visibility set to " + visible + ".");
 					l.setVisible(visible);
 				}
 				else if (obj instanceof Integer)
 				{
 					int zIndex = (Integer) obj;
-					DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Layer "
+					Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Layer "
 					        + id + " reordered to " + zIndex + ".");
 					l.setZPosition(zIndex);
 				}
 			}
-			DebugConstants.printIfDebug(DEBUG_MODE, VERBOSE, "Repainting.");
+			Debugger.printIfDebug(DEBUG_MODE, VERBOSE, "Repainting.");
 			mapPanel.repaint();
 		}
 	}

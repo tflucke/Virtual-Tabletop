@@ -159,7 +159,7 @@ public class NetworkHostTestor implements ColumnConstants
 	}
 	
 	private static AutoCompleteComboBox buildTileGroupSelector(
-	        JList<Tile> tileList)
+	        final JList<Tile> tileList)
 	{
 		AutoCompleteComboBox tileGroupSelector = new AutoCompleteComboBox(
 		        Arrays.asList(Tile.getGroupNames()));

@@ -9,7 +9,7 @@ package name.tomflucke.virtualdesktop;
  * print debug information.
  * 
  * @author Thomas Flucke
- * @version 1.0.1
+ * @version 1.0.2
  */
 public interface DebugConstants
 {
@@ -37,23 +37,4 @@ public interface DebugConstants
 	 * Print everything that occurs.
 	 */
 	public static final byte VERBOSE = 4;
-	
-	/**
-	 * A method which can be used as a short way to compare to debug levels, and
-	 * if the given is greater than or equal to the required, prints the message
-	 * to the console.
-	 * 
-	 * @param debugMode The current debug mode
-	 * @param requiredLevel The level required to print the message
-	 * @param message A message to print
-	 * @since 1.0.1
-	 */
-	public static void printIfDebug(byte debugMode, byte requiredLevel,
-	        String message)
-	{
-		if (debugMode >= requiredLevel)
-		{
-			System.out.println(message);
-		}
-	}
 }
