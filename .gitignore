@@ -1,0 +1,9 @@
+server/.cproject
+server/.project
+server/Debug
+client/.classpath
+client/.project
+client/.settings
+client/bin
+client/docs
+.metadata
