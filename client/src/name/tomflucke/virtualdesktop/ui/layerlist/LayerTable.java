@@ -6,8 +6,8 @@ import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-//import name.tomflucke.components.table.BooleanButtonRenderer;
-//import name.tomflucke.components.table.ButtonRenderer;
+import name.tomflucke.components.table.BooleanButtonRenderer;
+import name.tomflucke.components.table.ButtonRenderer;
 import name.tomflucke.dragNdrop.TableRowTransferHandler;
 import name.tomflucke.virtualdesktop.map.RPGMap;
 
@@ -26,7 +26,7 @@ public class LayerTable extends JTable implements ColumnConstants
 {
 	private static final long serialVersionUID = -8604416026115943743L;
 	
-	//private final ButtonRenderer hideButtonRenderer;
+	private final ButtonRenderer hideButtonRenderer;
 	
 	{
 		Object visible = new ImageIcon(
@@ -34,7 +34,7 @@ public class LayerTable extends JTable implements ColumnConstants
 		Object invisible = new ImageIcon(
 		        LayerTable.class.getResource("/config/images/invisible.png"));
 		
-		//hideButtonRenderer = new BooleanButtonRenderer(visible, invisible);
+		hideButtonRenderer = new BooleanButtonRenderer(visible, invisible);
 	}
 	
 	{
@@ -74,8 +74,8 @@ public class LayerTable extends JTable implements ColumnConstants
 					col.setCellRenderer(new LayerRenderer());
 					break;
 				case HIDE_BUTTON:
-				//	col.setCellRenderer(hideButtonRenderer);
-				//	col.setCellEditor(hideButtonRenderer);
+					col.setCellRenderer(hideButtonRenderer);
+					col.setCellEditor(hideButtonRenderer);
 					break;
 			}
 		}
