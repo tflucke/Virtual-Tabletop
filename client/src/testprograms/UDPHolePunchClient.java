@@ -27,7 +27,7 @@ public class UDPHolePunchClient
         System.out.println("Packet recived");
  
         // display response
-        String received = new String(packet.getData(), 0, packet.getLength());
+        String received = new String(packet.getData(), 0, "207.62.170.220:123456".length());
         System.out.println("Message from the outside: " + received);
      
         socket.close();
